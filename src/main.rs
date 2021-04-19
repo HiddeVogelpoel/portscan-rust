@@ -10,21 +10,22 @@ static mut PORTS:Vec<u16> = vec![];
 fn main(){
     // Setting up command line arguments
     let matches = App::new("Portscanner")
-        .version("0.0.3")
+        .version("0.0.4")
         .author("Hidde Vogelpoel")
         .about("Basic portscanner")
         .arg(Arg::with_name("target")
             .short("t")
             .long("target")
             .takes_value(true)
+            .required(true)
             .help("The target"))
         .arg(Arg::with_name("mode")
             .short("m")
             .long("mode")
             .takes_value(true)
             .help("Choose one of the available modes")
-            .possible_values(&["default", "t1000"])
-            .default_value("default"))
+            .possible_values(&["standard", "t1000"])
+            .default_value("standard"))
         .get_matches();
     
     // Calling scanports function 
@@ -52,7 +53,7 @@ fn main(){
 fn scanports(ip: &str, mode: &str){
     //Function is unsafe at the moment due to the PORTS variable
     unsafe{       
-        if mode == "default" { //default mode: check all ports
+        if mode == "standard" { //default mode: check all ports
             for i in 1..=65535{
         
                 let ip = format!("{}:{}", ip, i);
